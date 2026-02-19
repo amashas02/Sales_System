@@ -26,26 +26,26 @@ public class Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("System Dashboard");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 59, -1, -1));
+        jButton1.setText("jButton1");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, -1, -1));
 
-        jButton1.setText("Products");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 160, -1, -1));
+        jLabel1.setBackground(new java.awt.Color(255, 204, 204));
+        jLabel1.setOpaque(true);
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-7, 0, 790, 510));
 
-        jButton2.setText("Sales");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 244, -1, -1));
+        jButton2.setText("jButton2");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, -1, -1));
 
-        jButton3.setText("Shopping Cart");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 335, -1, -1));
+        jButton3.setText("jButton3");
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 150, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
