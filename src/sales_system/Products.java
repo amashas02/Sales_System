@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package sales_system;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
 /**
  *
  * @author USER
@@ -51,9 +52,14 @@ public class Products extends javax.swing.JFrame {
         jTextField2.setText("jTextField2");
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 270, -1, -1));
 
-        jButton2.setText("jButton2");
+        jButton2.setText("ADD");
         jButton2.setOpaque(true);
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, -1, 30));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 470, -1, 30));
 
         jButton1.setText("jButton1");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 190, -1, -1));
@@ -68,6 +74,12 @@ public class Products extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        // Inside your "Add" button
+     //Connection con = sales_system.db.mycon();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

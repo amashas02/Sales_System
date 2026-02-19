@@ -12,11 +12,14 @@ public class db {
     public static Connection mycon() {
         Connection con = null;
         try {
+            // Load the driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             
+            // Database URL using your specific DB name: sales_systemdb
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sales_systemdb", "root", "16534237");
+            
         } catch (Exception e) {
-            System.out.println("Connection Error: " + e);
+            System.out.println("Connection Failed: " + e.getMessage());
         }
         return con;
     }
