@@ -32,46 +32,20 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("System Dashboard");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 59, -1, -1));
 
         jButton1.setText("Products");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 160, -1, -1));
 
         jButton2.setText("Sales");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 244, -1, -1));
 
         jButton3.setText("Shopping Cart");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3))))
-                .addContainerGap(194, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jLabel1)
-                .addGap(76, 76, 76)
-                .addComponent(jButton1)
-                .addGap(61, 61, 61)
-                .addComponent(jButton2)
-                .addGap(68, 68, 68)
-                .addComponent(jButton3)
-                .addContainerGap(102, Short.MAX_VALUE))
-        );
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 335, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
