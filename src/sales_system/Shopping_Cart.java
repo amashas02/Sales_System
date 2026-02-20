@@ -39,8 +39,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
         txt_pay = new javax.swing.JTextField();
         lbl_balance = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         Remove = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -97,8 +95,12 @@ public class Shopping_Cart extends javax.swing.JFrame {
         lbl_grand_total.setText("Total");
         getContentPane().add(lbl_grand_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 470, 50, -1));
 
-        txt_pay.setText("Pay Amount");
-        getContentPane().add(txt_pay, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 470, -1, -1));
+        txt_pay.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_payKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txt_pay, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 70, -1));
 
         lbl_balance.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         lbl_balance.setForeground(new java.awt.Color(0, 0, 0));
@@ -106,13 +108,12 @@ public class Shopping_Cart extends javax.swing.JFrame {
         getContentPane().add(lbl_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, -1, -1));
 
         jButton2.setText("Report");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 470, -1, -1));
-
-        jLabel7.setText("jLabel7");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 80, -1, -1));
-
-        jTextField3.setText("jTextField3");
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 110, -1, -1));
 
         Remove.setText("Remove");
         Remove.addActionListener(new java.awt.event.ActionListener() {
@@ -123,7 +124,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
         getContentPane().add(Remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
-        jLabel1.setToolTipText("Product Id");
+        jLabel1.setToolTipText("");
         jLabel1.setOpaque(true);
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 1000, 560));
 
@@ -205,6 +206,73 @@ public class Shopping_Cart extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_com_productActionPerformed
+
+    private void txt_payKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_payKeyReleased
+        // TODO add your handling code here:
+        try {
+        double total = Double.parseDouble(lbl_grand_total.getText());
+        double pay = Double.parseDouble(txt_pay.getText());
+        double balance = pay - total;
+        
+        // Set balance to label
+        lbl_balance.setText(String.valueOf(balance));
+        
+        // Change color to red if pay is not enough
+        if (balance < 0) {
+            lbl_balance.setForeground(java.awt.Color.RED);
+        } else {
+            lbl_balance.setForeground(java.awt.Color.BLACK);
+        }
+    } catch (Exception e) {
+        lbl_balance.setText("0.00");
+    }
+    }//GEN-LAST:event_txt_payKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       try {
+        java.sql.Connection con = sales_system.db.mycon();
+        
+        // 1. Save to Sales Table
+        String sql = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+        pst.setString(1, lbl_grand_total.getText());
+        pst.setString(2, txt_pay.getText());
+        pst.setString(3, lbl_balance.getText());
+        pst.executeUpdate();
+        
+        java.sql.ResultSet rs = pst.getGeneratedKeys();
+        int sales_id = 0;
+        if(rs.next()) { sales_id = rs.getInt(1); }
+
+        // 2. Loop through Table with NULL CHECK
+        int rows = jTable1.getRowCount();
+        String sql_details = "INSERT INTO sales_details (sale_id, product_id, product_name, qty, price, total_price) VALUES (?,?,?,?,?,?)";
+        java.sql.PreparedStatement pst_details = con.prepareStatement(sql_details);
+
+        for (int i = 0; i < rows; i++) {
+            // --- THE FIX: Check if the first cell (ID) is null before proceeding ---
+            if (jTable1.getValueAt(i, 0) != null) { 
+                pst_details.setInt(1, sales_id);
+                pst_details.setString(2, jTable1.getValueAt(i, 0).toString());
+                pst_details.setString(3, jTable1.getValueAt(i, 1).toString());
+                pst_details.setString(4, jTable1.getValueAt(i, 2).toString());
+                pst_details.setString(5, jTable1.getValueAt(i, 3).toString());
+                pst_details.setString(6, jTable1.getValueAt(i, 4).toString());
+                pst_details.executeUpdate();
+            }
+        }
+        
+        javax.swing.JOptionPane.showMessageDialog(this, "Bill Saved! Sale ID: " + sales_id);
+        
+        // Clear table after successful save
+        javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        dt.setRowCount(0);
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Print Error: " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     public void calculate_grand_total() {
@@ -290,10 +358,8 @@ public class Shopping_Cart extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lbl_balance;
     private javax.swing.JLabel lbl_grand_total;
     private javax.swing.JTextField txt_pay;
