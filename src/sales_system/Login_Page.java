@@ -101,16 +101,16 @@ public class Login_Page extends javax.swing.JFrame {
     String username = txtUsername.getText();
     String password = new String(txtPassword.getPassword());
 
-    // 1. Get the connection
+    // Get the connection
     Connection con = db.mycon();
 
-    // 2. Prevent the "con is null" error with a check
+    
     if (con == null) {
         JOptionPane.showMessageDialog(this, "Error: Connection to sales_systemdb failed. Is MySQL running?");
         return; 
     }
 
-    // 3. Query the users table
+    // Query the users table
     String sql = "SELECT * FROM users WHERE username=? AND password=?";
     PreparedStatement pst = con.prepareStatement(sql);
     pst.setString(1, username);

@@ -29,8 +29,7 @@ public class Products extends javax.swing.JFrame {
         java.sql.PreparedStatement pst = con.prepareStatement("SELECT * FROM products");
         java.sql.ResultSet rs = pst.executeQuery();
         
-        // Use DbUtils to easily bind ResultSet to JTable
-        // Note: You need the rs2xml.jar library for this specific line
+        
         jTable1.setModel(DbUtils.resultSetToTableModel(rs));
         
     } catch (Exception e) {
@@ -168,9 +167,7 @@ public class Products extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        // Inside your "Add" button
-     //Connection con = sales_system.db.mycon();
+        //add details
      
     String name = txt_pname.getText();
     String category = txt_barcode.getText();
@@ -179,10 +176,8 @@ public class Products extends javax.swing.JFrame {
     String qty = txt_qty.getText();
 
     try {
-        // Use the correct package path we fixed earlier
         java.sql.Connection con = sales_system.db.mycon();
         
-        // SQL query - make sure your table columns in MySQL match these names exactly!
         String sql = "INSERT INTO products (product_name, category, buy_price, sell_price, available_qty) VALUES (?,?,?,?,?)";
         java.sql.PreparedStatement pst = con.prepareStatement(sql);
         
@@ -200,7 +195,6 @@ public class Products extends javax.swing.JFrame {
         }
 
     } catch (java.sql.SQLException e) {
-        // This will tell you if your SQL syntax or table names are wrong
         javax.swing.JOptionPane.showMessageDialog(this, "SQL Error: " + e.getMessage());
         e.printStackTrace();
     } catch (Exception e) {
@@ -228,7 +222,7 @@ public class Products extends javax.swing.JFrame {
         return;
     }
 
-    // 2. Ensure the package path is correct (dbcon instead of sales_system)
+    // 2. Ensure the package path is correct 
     java.sql.Connection con = sales_system.db.mycon();
     
     String sql = "UPDATE products SET product_name=?, category=?, buy_price=?, sell_price=?, available_qty=? WHERE product_id=?";
@@ -256,7 +250,6 @@ public class Products extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
        int r = jTable1.getSelectedRow();
     
     // Make sure column 0 is definitely your 'product_id' column
@@ -268,8 +261,7 @@ public class Products extends javax.swing.JFrame {
     txt_sprice.setText(jTable1.getValueAt(r, 4).toString());
     txt_qty.setText(jTable1.getValueAt(r, 5).toString());
 
-    // 3. Set the data into your Text Fields
-    //txt_id.setText(id);         // You need a hidden or uneditable field for the ID
+    
     
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -281,14 +273,13 @@ public class Products extends javax.swing.JFrame {
         return;
     }
 
-    // 2. Ask for confirmation
+    // Ask for confirmation
     int dialogResult = javax.swing.JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this product?", "Warning", javax.swing.JOptionPane.YES_NO_OPTION);
     
     if (dialogResult == javax.swing.JOptionPane.YES_OPTION) {
         try {
             java.sql.Connection con = sales_system.db.mycon();
             
-            // SQL Delete statement - ensure 'product_id' matches your DB column name
             String sql = "DELETE FROM products WHERE product_id=?";
             
             java.sql.PreparedStatement pst = con.prepareStatement(sql);
@@ -297,7 +288,7 @@ public class Products extends javax.swing.JFrame {
             pst.executeUpdate();
             javax.swing.JOptionPane.showMessageDialog(this, "Product Deleted Successfully!");
             
-            // 3. Refresh table and clear fields
+            // Refresh table and clear fields
             table_load();
             //clearFields(); 
             

@@ -133,6 +133,11 @@ public class Shopping_Cart extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
+        // Check if the user actually chose a valid ID
+    if (com_product.getSelectedItem().toString().equals("Select ID")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a valid Product ID!");
+        return;
+    }
     // 1. Get user input
     String id = com_product.getSelectedItem().toString();
     String qtyInput = txt_qty.getText();
@@ -180,7 +185,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
-        
+        com_product.setSelectedIndex(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
@@ -260,9 +265,17 @@ public class Shopping_Cart extends javax.swing.JFrame {
         java.sql.ResultSet rs = pst.executeQuery();
         
         com_product.removeAllItems();
+        
+        // 1. Add the placeholder first
+        com_product.addItem("Select ID"); 
+        
         while(rs.next()) {
             com_product.addItem(rs.getString("product_id"));
         }
+        
+        // 2. Ensure "Select ID" is the one showing when page opens
+        com_product.setSelectedIndex(0); 
+        
     } catch (Exception e) {
         e.printStackTrace();
     }
