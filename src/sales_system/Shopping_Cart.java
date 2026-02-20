@@ -242,20 +242,33 @@ public class Shopping_Cart extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_payKeyReleased
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    
         // 1. Immediate UI Lock to prevent double/triple clicking
     jButton3.setEnabled(false); 
 
     try {
-        java.sql.Connection con = sales_system.db.mycon(); 
+        // --- VALIDATION SECTION START ---
         
-        // 2. Data Validation
+        // Validation 1: Check if table is empty
         if (jTable1.getRowCount() == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please add items to the cart first!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Please add items to the cart first!", "Validation Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
             jButton3.setEnabled(true);
             return;
         }
 
+        // Validation 2: Check if Pay field is numeric
+        try {
+            Double.parseDouble(txt_pay.getText());
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid number for Payment!", "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            jButton3.setEnabled(true);
+            return;
+        }
+        
+        // --- VALIDATION SECTION END ---
+
+        java.sql.Connection con = sales_system.db.mycon(); 
+        
         // 3. Save the main Sales record
         String sql = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
         String sql_update_stock = "UPDATE products SET qty = qty - ? WHERE product_id = ?"; // The Stock Update SQL
