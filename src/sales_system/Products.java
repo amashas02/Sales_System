@@ -21,6 +21,7 @@ public class Products extends javax.swing.JFrame {
         table_load();//auto tbale load
         
     }
+    String productID; 
     
     public void table_load() {
     try {
@@ -69,6 +70,11 @@ public class Products extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton6.setText("Update");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 490, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
@@ -106,15 +112,20 @@ public class Products extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Product Name", "category", "Buy Price", "Sell Price", "Available Qty"
+                "Product ID", "Product Name", "category", "Buy Price", "Sell Price", "Available qty"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, 480, 320));
@@ -180,7 +191,7 @@ public class Products extends javax.swing.JFrame {
         
         if(rowAffected > 0) {
             javax.swing.JOptionPane.showMessageDialog(this, "Product Added Successfully!");
-            table_load(); // This will refresh your table automatically
+            table_load(); 
         }
 
     } catch (java.sql.SQLException e) {
@@ -201,6 +212,61 @@ public class Products extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        
+    try {
+    // 1. Check if an ID was actually selected from the table first
+    if (productID == null || productID.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table first!");
+        return;
+    }
+
+    // 2. Ensure the package path is correct (dbcon instead of sales_system)
+    java.sql.Connection con = sales_system.db.mycon();
+    
+    String sql = "UPDATE products SET product_name=?, category=?, buy_price=?, sell_price=?, available_qty=? WHERE product_id=?";
+    
+    java.sql.PreparedStatement pst = con.prepareStatement(sql);
+    pst.setString(1, txt_pname.getText());
+    pst.setString(2, txt_barcode.getText());
+    pst.setString(3, txt_bprice.getText());
+    pst.setString(4, txt_sprice.getText());
+    pst.setString(5, txt_qty.getText());
+    pst.setString(6, productID); 
+    
+    int rowsUpdated = pst.executeUpdate();
+    
+    if (rowsUpdated > 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Product Updated Successfully!");
+        table_load(); // Refresh to show the new data
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Update Failed: No row found with ID " + productID);
+    }
+    
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+}
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+       int r = jTable1.getSelectedRow();
+    
+    // Make sure column 0 is definitely your 'product_id' column
+    productID = jTable1.getValueAt(r, 0).toString(); 
+    
+    txt_pname.setText(jTable1.getValueAt(r, 1).toString());
+    txt_barcode.setText(jTable1.getValueAt(r, 2).toString());
+    txt_bprice.setText(jTable1.getValueAt(r, 3).toString());
+    txt_sprice.setText(jTable1.getValueAt(r, 4).toString());
+    txt_qty.setText(jTable1.getValueAt(r, 5).toString());
+
+    // 3. Set the data into your Text Fields
+    //txt_id.setText(id);         // You need a hidden or uneditable field for the ID
+    
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
