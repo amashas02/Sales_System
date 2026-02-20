@@ -4,6 +4,10 @@
  */
 package sales_system;
 
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+import java.util.HashMap;
 /**
  *
  * @author USER
@@ -229,10 +233,12 @@ public class Shopping_Cart extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_payKeyReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       try {
-        java.sql.Connection con = sales_system.db.mycon();
+       
         
-        // 1. Save to Sales Table
+        try {
+        java.sql.Connection con = sales_system.db.mycon(); 
+        
+        // 1. Save Sale record
         String sql = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
         java.sql.PreparedStatement pst = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
         pst.setString(1, lbl_grand_total.getText());
@@ -242,16 +248,14 @@ public class Shopping_Cart extends javax.swing.JFrame {
         
         java.sql.ResultSet rs = pst.getGeneratedKeys();
         int sales_id = 0;
-        if(rs.next()) { sales_id = rs.getInt(1); }
+        if (rs.next()) { sales_id = rs.getInt(1); }
 
-        // 2. Loop through Table with NULL CHECK
-        int rows = jTable1.getRowCount();
+        // 2. Save Table Items (with Null Check)
         String sql_details = "INSERT INTO sales_details (sale_id, product_id, product_name, qty, price, total_price) VALUES (?,?,?,?,?,?)";
         java.sql.PreparedStatement pst_details = con.prepareStatement(sql_details);
 
-        for (int i = 0; i < rows; i++) {
-            // --- THE FIX: Check if the first cell (ID) is null before proceeding ---
-            if (jTable1.getValueAt(i, 0) != null) { 
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            if (jTable1.getValueAt(i, 0) != null) {
                 pst_details.setInt(1, sales_id);
                 pst_details.setString(2, jTable1.getValueAt(i, 0).toString());
                 pst_details.setString(3, jTable1.getValueAt(i, 1).toString());
@@ -261,15 +265,37 @@ public class Shopping_Cart extends javax.swing.JFrame {
                 pst_details.executeUpdate();
             }
         }
+
+        // --- FIXED JASPER LOGIC ---
+        // Try to load the report as a Resource Stream (this fixes the FileNotFound error)
+        java.io.InputStream reportStream = getClass().getResourceAsStream("/reports/bill.jasper");
         
-        javax.swing.JOptionPane.showMessageDialog(this, "Bill Saved! Sale ID: " + sales_id);
+        if (reportStream == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: Report file not found in /reports/bill.jasper");
+            return;
+        }
+
+        java.util.HashMap<String, Object> para = new java.util.HashMap<>();
+        para.put("inv_id", sales_id); 
         
-        // Clear table after successful save
+        net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportStream, para, con);
+        
+        // Only show if the report contains data
+        if (jp.getPages().size() > 0) {
+            net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Report is empty. Please check your SQL JOIN.");
+        }
+
+        // 3. Reset UI
         javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         dt.setRowCount(0);
+        lbl_grand_total.setText("0.00");
+        txt_pay.setText("");
+        lbl_balance.setText("0.00");
 
     } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Print Error: " + e.getMessage());
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         e.printStackTrace();
     }
     }//GEN-LAST:event_jButton2ActionPerformed
