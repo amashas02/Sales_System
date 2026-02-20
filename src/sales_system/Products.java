@@ -18,7 +18,7 @@ public class Products extends javax.swing.JFrame {
      */
     public Products() {
         initComponents();
-        table_load();
+        table_load();//auto tbale load
         
     }
     
