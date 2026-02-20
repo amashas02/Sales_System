@@ -108,6 +108,11 @@ public class Products extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 490, -1, 30));
 
         jButton3.setText("Delete");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 490, -1, 30));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -267,6 +272,40 @@ public class Products extends javax.swing.JFrame {
     //txt_id.setText(id);         // You need a hidden or uneditable field for the ID
     
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+        if (productID == null || productID.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table to delete!");
+        return;
+    }
+
+    // 2. Ask for confirmation
+    int dialogResult = javax.swing.JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this product?", "Warning", javax.swing.JOptionPane.YES_NO_OPTION);
+    
+    if (dialogResult == javax.swing.JOptionPane.YES_OPTION) {
+        try {
+            java.sql.Connection con = sales_system.db.mycon();
+            
+            // SQL Delete statement - ensure 'product_id' matches your DB column name
+            String sql = "DELETE FROM products WHERE product_id=?";
+            
+            java.sql.PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, productID);
+            
+            pst.executeUpdate();
+            javax.swing.JOptionPane.showMessageDialog(this, "Product Deleted Successfully!");
+            
+            // 3. Refresh table and clear fields
+            table_load();
+            //clearFields(); // Optional: helper method to empty text boxes
+            
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Delete Error: " + e.getMessage());
+        }
+    }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
