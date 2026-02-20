@@ -42,8 +42,8 @@ public class Shopping_Cart extends javax.swing.JFrame {
         lbl_grand_total = new javax.swing.JLabel();
         txt_pay = new javax.swing.JTextField();
         lbl_balance = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         Remove = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,14 +111,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
         lbl_balance.setText("Balance");
         getContentPane().add(lbl_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, -1, -1));
 
-        jButton2.setText("Report");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 470, -1, -1));
-
         Remove.setText("Remove");
         Remove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,6 +118,14 @@ public class Shopping_Cart extends javax.swing.JFrame {
             }
         });
         getContentPane().add(Remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
+
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 490, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setToolTipText("");
@@ -232,62 +232,72 @@ public class Shopping_Cart extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_txt_payKeyReleased
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       
-        
-        try {
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        // 1. Immediate UI Lock to prevent double/triple clicking
+    jButton3.setEnabled(false); 
+
+    try {
         java.sql.Connection con = sales_system.db.mycon(); 
         
-        // 1. Save Sale record
+        // 2. Data Validation
+        if (jTable1.getRowCount() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please add items to the cart first!");
+            jButton3.setEnabled(true);
+            return;
+        }
+
+        // 3. Save the main Sales record
         String sql = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
+        String sql_update_stock = "UPDATE products SET qty = qty - ? WHERE product_id = ?"; // The Stock Update SQL
         java.sql.PreparedStatement pst = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
-        pst.setString(1, lbl_grand_total.getText());
-        pst.setString(2, txt_pay.getText());
-        pst.setString(3, lbl_balance.getText());
+        
+        // Use default values if fields are empty to prevent crashes
+        pst.setString(1, lbl_grand_total.getText().isEmpty() ? "0" : lbl_grand_total.getText());
+        pst.setString(2, txt_pay.getText().isEmpty() ? "0" : txt_pay.getText());
+        pst.setString(3, lbl_balance.getText().isEmpty() ? "0" : lbl_balance.getText());
         pst.executeUpdate();
         
         java.sql.ResultSet rs = pst.getGeneratedKeys();
         int sales_id = 0;
-        if (rs.next()) { sales_id = rs.getInt(1); }
+        if (rs.next()) { 
+            sales_id = rs.getInt(1); 
+        }
 
-        // 2. Save Table Items (with Null Check)
+        // 4. Save Table Items (The "Details" Loop)
         String sql_details = "INSERT INTO sales_details (sale_id, product_id, product_name, qty, price, total_price) VALUES (?,?,?,?,?,?)";
         java.sql.PreparedStatement pst_details = con.prepareStatement(sql_details);
 
         for (int i = 0; i < jTable1.getRowCount(); i++) {
-            if (jTable1.getValueAt(i, 0) != null) {
+            Object pid = jTable1.getValueAt(i, 0);
+            if (pid != null && !pid.toString().trim().isEmpty()) {
                 pst_details.setInt(1, sales_id);
                 pst_details.setString(2, jTable1.getValueAt(i, 0).toString());
                 pst_details.setString(3, jTable1.getValueAt(i, 1).toString());
                 pst_details.setString(4, jTable1.getValueAt(i, 2).toString());
                 pst_details.setString(5, jTable1.getValueAt(i, 3).toString());
                 pst_details.setString(6, jTable1.getValueAt(i, 4).toString());
-                pst_details.executeUpdate();
+                pst_details.executeUpdate(); 
             }
         }
 
-        // --- FIXED JASPER LOGIC ---
-        // Try to load the report as a Resource Stream (this fixes the FileNotFound error)
+        // --- JASPER REPORT LOGIC ---
         java.io.InputStream reportStream = getClass().getResourceAsStream("/reports/bill.jasper");
         
-        if (reportStream == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: Report file not found in /reports/bill.jasper");
-            return;
+        if (reportStream != null) {
+            java.util.HashMap<String, Object> para = new java.util.HashMap<>();
+            para.put("inv_id", sales_id); 
+            
+            net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportStream, para, con);
+            
+            if (jp.getPages().size() > 0) {
+                net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+            }
         }
 
-        java.util.HashMap<String, Object> para = new java.util.HashMap<>();
-        para.put("inv_id", sales_id); 
+        // 5. Success and Reset UI
+        javax.swing.JOptionPane.showMessageDialog(this, "Sale Completed! ID: " + sales_id);
         
-        net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportStream, para, con);
-        
-        // Only show if the report contains data
-        if (jp.getPages().size() > 0) {
-            net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Report is empty. Please check your SQL JOIN.");
-        }
-
-        // 3. Reset UI
         javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         dt.setRowCount(0);
         lbl_grand_total.setText("0.00");
@@ -297,8 +307,11 @@ public class Shopping_Cart extends javax.swing.JFrame {
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         e.printStackTrace();
+    } finally {
+        // 6. Re-enable button after processing is complete
+        jButton3.setEnabled(true);
     }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     
     public void calculate_grand_total() {
@@ -379,7 +392,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
     private javax.swing.JButton Remove;
     private javax.swing.JComboBox<String> com_product;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
