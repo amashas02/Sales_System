@@ -15,6 +15,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
      */
     public Shopping_Cart() {
         initComponents();
+        load_products();
     }
 
     /**
@@ -26,70 +27,197 @@ public class Shopping_Cart extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txt_qty = new javax.swing.JTextField();
+        com_product = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        lbl_grand_total = new javax.swing.JLabel();
+        txt_pay = new javax.swing.JTextField();
+        lbl_balance = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        Remove = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Shopping Cart");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 41, 168, -1));
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Shopping Cart");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, -1, -1));
+        getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 80, -1));
 
-        jButton1.setText("Back");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 45, -1, -1));
+        com_product.setToolTipText("Product Id");
+        com_product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                com_productActionPerformed(evt);
+            }
+        });
+        getContentPane().add(com_product, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 130, 90, -1));
 
-        jLabel2.setText("Product ID");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 89, 72, -1));
+        jButton1.setText("Add to Cart");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, -1, -1));
 
-        jButton2.setText("Add toCart");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 122, -1, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 86, 71, -1));
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Product Id");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Quantity");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, -1, -1));
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Product Id", "Product Name", "Quantity", "Price", "Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, 678, 232));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 610, 250));
 
-        jLabel3.setText("Total");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(242, 521, 37, -1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 518, 71, -1));
+        lbl_grand_total.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lbl_grand_total.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_grand_total.setText("Total");
+        getContentPane().add(lbl_grand_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 470, 50, -1));
 
-        jLabel4.setText("Balance");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 521, 51, -1));
+        txt_pay.setText("Pay Amount");
+        getContentPane().add(txt_pay, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 470, -1, -1));
 
-        jButton3.setText("Print Bill");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(844, 509, -1, -1));
+        lbl_balance.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lbl_balance.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_balance.setText("Balance");
+        getContentPane().add(lbl_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, -1, -1));
 
-        jLabel5.setText("Quantity");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 163, -1, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 160, 71, -1));
+        jButton2.setText("Report");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 470, -1, -1));
+
+        jLabel7.setText("jLabel7");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 80, -1, -1));
+
+        jTextField3.setText("jTextField3");
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 110, -1, -1));
+
+        Remove.setText("Remove");
+        Remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoveActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
+
+        jLabel1.setBackground(new java.awt.Color(255, 153, 153));
+        jLabel1.setToolTipText("Product Id");
+        jLabel1.setOpaque(true);
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 1000, 560));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+    // 1. Get user input
+    String id = com_product.getSelectedItem().toString();
+    String qtyInput = txt_qty.getText();
+
+    // Validation: Don't allow empty quantity
+    if (qtyInput.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please enter quantity first!");
+        return;
+    }
+
+    try {
+        // 2. Database Lookup: Get Name and Price based on the ID
+        java.sql.Connection con = sales_system.db.mycon();
+        String sql = "SELECT product_name, sell_price FROM products WHERE product_id = ?";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        pst.setString(1, id);
+        java.sql.ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            // 3. Extract data from DB result
+            String name = rs.getString("product_name");
+            double price = rs.getDouble("sell_price");
+            double qty = Double.parseDouble(qtyInput);
+            double total = price * qty;
+
+            // 4. Add data to the JTable
+            javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+            java.util.Vector v = new java.util.Vector();
+            v.add(id);      // Column 0
+            v.add(name);    // Column 1
+            v.add(qty);     // Column 2
+            v.add(price);   // Column 3
+            v.add(total);   // Column 4
+            
+            dt.addRow(v);
+            
+            // 5. Update the Grand Total and clear qty field
+            calculate_grand_total();
+            txt_qty.setText(""); 
+            
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Product ID not found in database.");
+        }
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
+        // TODO add your handling code here:
+        javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    
+    int rw = jTable1.getSelectedRow();
+    if (rw != -1) { // -1 means no row is selected
+        dt.removeRow(rw);
+        calculate_grand_total(); // Recalculate after removing
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a row to remove!");
+    }
+    }//GEN-LAST:event_RemoveActionPerformed
+
+    private void com_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_com_productActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_com_productActionPerformed
+
+    
+    public void calculate_grand_total() {
+    double grandTotal = 0;
+    int rowCount = jTable1.getRowCount();
+
+    for (int i = 0; i < rowCount; i++) {
+        // Look at the "Total" column (Column index 4)
+        Object value = jTable1.getValueAt(i, 4);
+        
+        // Only calculate if the cell is NOT null
+        if (value != null) {
+            grandTotal += Double.parseDouble(value.toString());
+        }
+    }
+    // Update your Label (make sure the name matches your JLabel)
+    lbl_grand_total.setText(String.valueOf(grandTotal));
+}
     /**
      * @param args the command line arguments
      */
@@ -125,19 +253,37 @@ public class Shopping_Cart extends javax.swing.JFrame {
         });
     }
 
+    private void load_products() {
+    try {
+        java.sql.Connection con = sales_system.db.mycon();
+        java.sql.PreparedStatement pst = con.prepareStatement("SELECT product_id FROM products");
+        java.sql.ResultSet rs = pst.executeQuery();
+        
+        com_product.removeAllItems();
+        while(rs.next()) {
+            com_product.addItem(rs.getString("product_id"));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Remove;
+    private javax.swing.JComboBox<String> com_product;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel lbl_balance;
+    private javax.swing.JLabel lbl_grand_total;
+    private javax.swing.JTextField txt_pay;
+    private javax.swing.JTextField txt_qty;
     // End of variables declaration//GEN-END:variables
 }

@@ -299,7 +299,7 @@ public class Products extends javax.swing.JFrame {
             
             // 3. Refresh table and clear fields
             table_load();
-            //clearFields(); // Optional: helper method to empty text boxes
+            //clearFields(); 
             
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Delete Error: " + e.getMessage());

@@ -40,7 +40,12 @@ public class Dashboard extends javax.swing.JFrame {
         jButton2.setText("jButton2");
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, -1, -1));
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Shopping Cart");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 204));
@@ -49,6 +54,13 @@ public class Dashboard extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        Shopping_Cart sc = new Shopping_Cart();
+        sc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
