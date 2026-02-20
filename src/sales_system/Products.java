@@ -5,6 +5,8 @@
 package sales_system;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import net.proteanit.sql.DbUtils;
+import sales_system.db; 
 /**
  *
  * @author USER
@@ -16,7 +18,24 @@ public class Products extends javax.swing.JFrame {
      */
     public Products() {
         initComponents();
+        table_load();
+        
     }
+    
+    public void table_load() {
+    try {
+        java.sql.Connection con = sales_system.db.mycon();
+        java.sql.PreparedStatement pst = con.prepareStatement("SELECT * FROM products");
+        java.sql.ResultSet rs = pst.executeQuery();
+        
+        // Use DbUtils to easily bind ResultSet to JTable
+        // Note: You need the rs2xml.jar library for this specific line
+        jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+        
+    } catch (Exception e) {
+        System.out.println("Table Load Error: " + e.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,8 +48,8 @@ public class Products extends javax.swing.JFrame {
 
         jButton6 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txt_pname = new javax.swing.JTextField();
+        txt_barcode = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -41,9 +60,9 @@ public class Products extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txt_bprice = new javax.swing.JTextField();
+        txt_qty = new javax.swing.JTextField();
+        txt_sprice = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -57,13 +76,13 @@ public class Products extends javax.swing.JFrame {
         jLabel2.setText("Produtcs");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 30, 110, -1));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txt_pname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txt_pnameActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 90, 30));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 90, 30));
+        getContentPane().add(txt_pname, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 90, 30));
+        getContentPane().add(txt_barcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 90, 30));
 
         jButton2.setText("ADD");
         jButton2.setOpaque(true);
@@ -119,9 +138,9 @@ public class Products extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Available Qty");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, -1, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 90, 30));
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, 90, 30));
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 90, 30));
+        getContentPane().add(txt_bprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 90, 30));
+        getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, 90, 30));
+        getContentPane().add(txt_sprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 90, 30));
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -136,11 +155,48 @@ public class Products extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Inside your "Add" button
      //Connection con = sales_system.db.mycon();
+     
+    String name = txt_pname.getText();
+    String category = txt_barcode.getText();
+    String bprice = txt_bprice.getText();
+    String sprice = txt_sprice.getText();
+    String qty = txt_qty.getText();
+
+    try {
+        // Use the correct package path we fixed earlier
+        java.sql.Connection con = sales_system.db.mycon();
+        
+        // SQL query - make sure your table columns in MySQL match these names exactly!
+        String sql = "INSERT INTO products (product_name, category, buy_price, sell_price, available_qty) VALUES (?,?,?,?,?)";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        
+        pst.setString(1, name);
+        pst.setString(2, category);
+        pst.setString(3, bprice);
+        pst.setString(4, sprice);
+        pst.setString(5, qty);
+        
+        int rowAffected = pst.executeUpdate();
+        
+        if(rowAffected > 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Product Added Successfully!");
+            table_load(); // This will refresh your table automatically
+        }
+
+    } catch (java.sql.SQLException e) {
+        // This will tell you if your SQL syntax or table names are wrong
+        javax.swing.JOptionPane.showMessageDialog(this, "SQL Error: " + e.getMessage());
+        e.printStackTrace();
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
+    }
+     
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txt_pnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_pnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txt_pnameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -197,10 +253,10 @@ public class Products extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txt_barcode;
+    private javax.swing.JTextField txt_bprice;
+    private javax.swing.JTextField txt_pname;
+    private javax.swing.JTextField txt_qty;
+    private javax.swing.JTextField txt_sprice;
     // End of variables declaration//GEN-END:variables
 }
