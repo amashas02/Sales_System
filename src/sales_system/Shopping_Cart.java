@@ -53,6 +53,12 @@ public class Shopping_Cart extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Shopping Cart");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, -1, -1));
+
+        txt_qty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_qtyKeyTyped(evt);
+            }
+        });
         getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 80, -1));
 
         com_product.setToolTipText("Product Id");
@@ -102,6 +108,9 @@ public class Shopping_Cart extends javax.swing.JFrame {
         txt_pay.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_payKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_payKeyTyped(evt);
             }
         });
         getContentPane().add(txt_pay, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 70, -1));
@@ -313,6 +322,32 @@ public class Shopping_Cart extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void txt_qtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_qtyKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+    // Allow only digits (0-9) and backspace
+    if (!Character.isDigit(c)) {
+        evt.consume(); // This "eats" the character so it doesn't appear in the box
+        // Optional: show a small warning in the console or a tooltip
+    }
+    }//GEN-LAST:event_txt_qtyKeyTyped
+
+    private void txt_payKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_payKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+    String text = txt_pay.getText();
+
+    // Allow digits, backspace, and only ONE decimal point
+    if (!Character.isDigit(c) && c != '.') {
+        evt.consume();
+    }
+    
+    // Prevent entering more than one dot
+    if (c == '.' && text.contains(".")) {
+        evt.consume();
+    }
+    }//GEN-LAST:event_txt_payKeyTyped
+
     
     public void calculate_grand_total() {
     double grandTotal = 0;
@@ -327,7 +362,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
             grandTotal += Double.parseDouble(value.toString());
         }
     }
-    // Update your Label (make sure the name matches your JLabel)
     lbl_grand_total.setText(String.valueOf(grandTotal));
 }
     /**
