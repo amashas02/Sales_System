@@ -27,23 +27,14 @@ public class Sales extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txt_search = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btn_top_selling = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_searchKeyReleased(evt);
-            }
-        });
-        getContentPane().add(txt_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, 80, -1));
 
         jLabel3.setText("Sales");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, -1, -1));
@@ -54,7 +45,7 @@ public class Sales extends javax.swing.JFrame {
                 btn_top_sellingActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, -1, -1));
+        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 100, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -69,47 +60,52 @@ public class Sales extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 650, 280));
-
-        jLabel4.setText("Search Sale ID");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, -1, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, 650, 280));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 910, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
-        // TODO add your handling code here:
-        String id = txt_search.getText();
-    try {
-        String sql = "SELECT * FROM sales WHERE sale_id LIKE '%"+id+"%'";
-        java.sql.ResultSet rs = sales_system.db.mycon().createStatement().executeQuery(sql);
-        
-        // Standard table loading logic here...
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    }//GEN-LAST:event_txt_searchKeyReleased
-
     private void btn_top_sellingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_top_sellingActionPerformed
         // TODO add your handling code here:
-        
-        try {
+       // 1. Get the selected row index
+    // 1. Get the selected row from your Sales JTable
+    int selectedRow = jTable1.getSelectedRow();
+    
+    // 2. Check if a row is actually selected
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a sale from the table first!");
+        return;
+    }
+
+    try {
+        // 3. Get the Sale ID from the first column (index 0)
+        // We convert it to String first, then Parse to Integer to avoid ClassCast errors
+        String idString = jTable1.getValueAt(selectedRow, 0).toString();
+        Integer saleID = Integer.parseInt(idString); 
+
+        // 4. Database Connection
         java.sql.Connection con = sales_system.db.mycon();
         
-        // Path to your new Profitability jrxml
+        // 5. Create the Parameter Map
+        java.util.HashMap<String, Object> para = new java.util.HashMap<>();
+        para.put("para_sale_id", saleID); // This name MUST match your Jasper Parameter exactly
+
+        // 6. Path to your report
         String reportPath = "src\\reports\\Profitability_Report.jrxml"; 
         
+        // 7. Compile, Fill, and View
         net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
-        
-        // No parameters needed for a general report, so we pass 'null'
-        net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, null, con);
-        
+        net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, para, con);
         net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
 
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Invalid Sale ID format!");
     } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage());
     }
+       
     }//GEN-LAST:event_btn_top_sellingActionPerformed
 
     /**
@@ -171,9 +167,7 @@ public class Sales extends javax.swing.JFrame {
     private javax.swing.JButton btn_top_selling;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
 }

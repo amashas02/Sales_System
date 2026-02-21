@@ -167,6 +167,11 @@ public class Products extends javax.swing.JFrame {
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(334, 140, 70, -1));
 
         jButton4.setText("Low stcok report");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 490, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
@@ -392,6 +397,30 @@ public void loadSuppliers() {
         }
     }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+        java.sql.Connection con = sales_system.db.mycon();
+        
+        // Path to your jrxml
+        String reportPath = "src\\reports\\Reorder_Report.jrxml"; 
+        
+        // Compile and Fill
+        net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
+        
+        // We don't need parameters here as the SQL handles the 'qty <= 10' filter
+        net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, null, con);
+        
+        // View Report
+        net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
