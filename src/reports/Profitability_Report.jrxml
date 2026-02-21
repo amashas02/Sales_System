@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Profitability_Report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c6be52a-3c02-4c52-961d-a3521c5624d6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CoffeeShopLink"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[SELECT 
+    p.product_name, 
+    SUM(sd.qty) AS total_quantity_sold, 
+    SUM(sd.total_price) AS total_revenue,
+    SUM(sd.qty * p.buy_price) AS total_cost,
+    SUM(sd.total_price - (sd.qty * p.buy_price)) AS net_profit
+FROM sales_details sd
+INNER JOIN products p ON sd.product_id = p.product_id
+GROUP BY p.product_id
+ORDER BY net_profit DESC;]]>
+	</queryString>
+	<field name="product_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="product_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="product_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+	</field>
+	<field name="total_quantity_sold" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_quantity_sold"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_quantity_sold"/>
+	</field>
+	<field name="total_revenue" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_revenue"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_revenue"/>
+	</field>
+	<field name="total_cost" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_cost"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_cost"/>
+	</field>
+	<field name="net_profit" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="net_profit"/>
+		<property name="com.jaspersoft.studio.field.label" value="net_profit"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="15" width="100" height="30" uuid="c4faac05-90bd-445d-b76a-af5f1a827eee">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="92d903f4-a9d9-446d-8442-d185a9e2f02a"/>
+				</reportElement>
+				<text><![CDATA[product_name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="10" width="100" height="30" uuid="89923a26-43ac-4866-8628-df61ab0078a9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e1d18e0-de28-46c2-ada7-61d54a7ed33d"/>
+				</reportElement>
+				<text><![CDATA[total_quantity_sold]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="10" width="100" height="30" uuid="0a873b47-7fa3-41ce-9a9a-31317c2ccc4a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9578fe7f-424b-4fc5-b490-69d20b19f86e"/>
+				</reportElement>
+				<text><![CDATA[total_revenue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="10" width="100" height="30" uuid="d158a2ed-1273-4533-9b96-ceb01da2a5da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5c74da68-9144-4382-ab95-0ae2a2282a0c"/>
+				</reportElement>
+				<text><![CDATA[total_cost]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="0" width="100" height="30" uuid="ddf8f266-f738-4d28-b821-98cf8cd06587">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7abfb0fa-dc64-44bb-ba75-8761296ce72f"/>
+				</reportElement>
+				<text><![CDATA[net_profit]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="100" height="30" uuid="87bd5dac-4e74-4fed-beae-de66f2c90e51">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="92d903f4-a9d9-446d-8442-d185a9e2f02a"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{product_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="20" width="100" height="30" uuid="0cdabc7f-4dc0-43c6-8c8f-8fc568047da5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e1d18e0-de28-46c2-ada7-61d54a7ed33d"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{total_quantity_sold}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="20" width="100" height="30" uuid="16f7fd0e-2699-4bb3-bfe9-5d107271a9d0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9578fe7f-424b-4fc5-b490-69d20b19f86e"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{total_revenue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="20" width="100" height="30" uuid="2a7cdcf0-05eb-48ad-89e6-787b6f40e6bf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5c74da68-9144-4382-ab95-0ae2a2282a0c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{total_cost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="20" width="100" height="30" uuid="88fc4f07-28c2-4c13-96ce-b0ebdda5cce0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7abfb0fa-dc64-44bb-ba75-8761296ce72f"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{net_profit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="44" splitType="Stretch"/>
+	</summary>
+</jasperReport>

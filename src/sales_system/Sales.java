@@ -15,6 +15,7 @@ public class Sales extends javax.swing.JFrame {
      */
     public Sales() {
         initComponents();
+        table_load();
     }
 
     /**
@@ -26,22 +27,34 @@ public class Sales extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        txt_search = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        btn_top_selling = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("Back");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchKeyReleased(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(33, 33, -1, -1));
+        getContentPane().add(txt_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, 80, -1));
+
+        jLabel3.setText("Sales");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, -1, -1));
+
+        btn_top_selling.setText("Product Profit Report");
+        btn_top_selling.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_top_sellingActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -54,23 +67,50 @@ public class Sales extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(86, 110, 672, 326));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 650, 280));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Sales");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 33, 95, -1));
-
-        jButton2.setText("Print");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 491, -1, -1));
+        jLabel4.setText("Search Sale ID");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 910, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String id = txt_search.getText();
+    try {
+        String sql = "SELECT * FROM sales WHERE sale_id LIKE '%"+id+"%'";
+        java.sql.ResultSet rs = sales_system.db.mycon().createStatement().executeQuery(sql);
+        
+        // Standard table loading logic here...
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_txt_searchKeyReleased
+
+    private void btn_top_sellingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_top_sellingActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+        java.sql.Connection con = sales_system.db.mycon();
+        
+        // Path to your new Profitability jrxml
+        String reportPath = "src\\reports\\Profitability_Report.jrxml"; 
+        
+        net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
+        
+        // No parameters needed for a general report, so we pass 'null'
+        net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, null, con);
+        
+        net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btn_top_sellingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -106,13 +146,34 @@ public class Sales extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void table_load() {
+    try {
+        java.sql.ResultSet rs = sales_system.db.mycon().createStatement().executeQuery("SELECT * FROM sales");
+        javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        dt.setRowCount(0);
+
+        while (rs.next()) {
+            java.util.Vector v = new java.util.Vector();
+            v.add(rs.getString("sale_id"));
+            v.add(rs.getString("total_bill"));
+            v.add(rs.getString("pay_amount"));
+            v.add(rs.getString("balance"));
+            dt.addRow(v);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
     // Finalized UI Design 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton btn_top_selling;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
 }

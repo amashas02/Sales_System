@@ -128,13 +128,13 @@ public class Shopping_Cart extends javax.swing.JFrame {
         });
         getContentPane().add(Remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Bill Print");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 490, -1, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 470, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setToolTipText("");
@@ -230,7 +230,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
         // Set balance to label
         lbl_balance.setText(String.valueOf(balance));
         
-        // Change color to red if pay is not enough
         if (balance < 0) {
             lbl_balance.setForeground(java.awt.Color.RED);
         } else {
@@ -243,11 +242,9 @@ public class Shopping_Cart extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     
-        // 1. Immediate UI Lock to prevent double/triple clicking
     jButton3.setEnabled(false); 
 
     try {
-        // --- VALIDATION SECTION START ---
         
         // Validation 1: Check if table is empty
         if (jTable1.getRowCount() == 0) {
@@ -265,7 +262,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
             return;
         }
         
-        // --- VALIDATION SECTION END ---
 
         java.sql.Connection con = sales_system.db.mycon(); 
         
@@ -303,7 +299,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
             }
         }
 
-        // --- JASPER REPORT LOGIC ---
         java.io.InputStream reportStream = getClass().getResourceAsStream("/reports/bill.jasper");
         
         if (reportStream != null) {
@@ -340,8 +335,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
         char c = evt.getKeyChar();
     // Allow only digits (0-9) and backspace
     if (!Character.isDigit(c)) {
-        evt.consume(); // This "eats" the character so it doesn't appear in the box
-        // Optional: show a small warning in the console or a tooltip
+        evt.consume();
     }
     }//GEN-LAST:event_txt_qtyKeyTyped
 
@@ -367,7 +361,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
     int rowCount = jTable1.getRowCount();
 
     for (int i = 0; i < rowCount; i++) {
-        // Look at the "Total" column (Column index 4)
         Object value = jTable1.getValueAt(i, 4);
         
         // Only calculate if the cell is NOT null

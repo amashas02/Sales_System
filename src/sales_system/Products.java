@@ -19,6 +19,7 @@ public class Products extends javax.swing.JFrame {
     public Products() {
         initComponents();
         table_load();//auto tbale load
+        loadSuppliers();
         
     }
     String productID; 
@@ -48,8 +49,8 @@ public class Products extends javax.swing.JFrame {
 
         jButton6 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        txt_pname = new javax.swing.JTextField();
-        txt_barcode = new javax.swing.JTextField();
+        txt_name = new javax.swing.JTextField();
+        txt_category = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -60,9 +61,12 @@ public class Products extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txt_bprice = new javax.swing.JTextField();
+        txt_buy = new javax.swing.JTextField();
         txt_qty = new javax.swing.JTextField();
-        txt_sprice = new javax.swing.JTextField();
+        txt_sell = new javax.swing.JTextField();
+        com_supplier = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,13 +85,13 @@ public class Products extends javax.swing.JFrame {
         jLabel2.setText("Produtcs");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 30, 110, -1));
 
-        txt_pname.addActionListener(new java.awt.event.ActionListener() {
+        txt_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_pnameActionPerformed(evt);
+                txt_nameActionPerformed(evt);
             }
         });
-        getContentPane().add(txt_pname, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 90, 30));
-        getContentPane().add(txt_barcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 90, 30));
+        getContentPane().add(txt_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 90, 30));
+        getContentPane().add(txt_category, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 90, 30));
 
         jButton2.setText("ADD");
         jButton2.setOpaque(true);
@@ -98,7 +102,7 @@ public class Products extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 490, -1, 30));
 
-        jButton1.setText("Report");
+        jButton1.setText("Product Report");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -116,13 +120,13 @@ public class Products extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Product ID", "Product Name", "category", "Buy Price", "Sell Price", "Available qty"
+                "Product ID", "Product Name", "category", "Buy Price", "Sell Price", "Available qty", "Suppler name"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -140,7 +144,7 @@ public class Products extends javax.swing.JFrame {
 
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("category");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Buy Price");
@@ -153,100 +157,191 @@ public class Products extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Available Qty");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, -1, -1));
-        getContentPane().add(txt_bprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 90, 30));
+        getContentPane().add(txt_buy, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 90, 30));
         getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, 90, 30));
-        getContentPane().add(txt_sprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 90, 30));
+        getContentPane().add(txt_sell, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 90, 30));
+        getContentPane().add(com_supplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(302, 180, 100, -1));
+
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("Suppelr id");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(334, 140, 70, -1));
+
+        jButton4.setText("Low stcok report");
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 490, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setOpaque(true);
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 610));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1100, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Create a HashMap to store Name as Key and ID as Value
+java.util.HashMap<String, Integer> supplierMap = new java.util.HashMap<>();
+
+public void loadSuppliers() {
+    try {
+    java.sql.ResultSet rs = sales_system.db.mycon().createStatement().executeQuery("SELECT sid, supplier_name FROM supplier");
+    
+    com_supplier.removeAllItems();
+    supplierMap.clear();
+
+    while (rs.next()) {
+        int id = rs.getInt("sid");
+        String name = rs.getString("supplier_name");
+
+        // Convert the ID to a String to show it in the ComboBox
+        String idString = String.valueOf(id);
+        
+        com_supplier.addItem(idString); // This adds ONLY the ID to the ComboBox
+        
+        // Store the ID in the map using the ID string as the key
+        supplierMap.put(idString, id); 
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+}
+}
+    
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //add details
      
-    String name = txt_pname.getText();
-    String category = txt_barcode.getText();
-    String bprice = txt_bprice.getText();
-    String sprice = txt_sprice.getText();
-    String qty = txt_qty.getText();
+        // 1. Validation: Ensure a supplier is selected
+    Object selectedItem = com_supplier.getSelectedItem();
+    if (selectedItem == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a Supplier first!");
+        return;
+    }
 
     try {
+        // 2. Get the Numeric Supplier ID from your HashMap
+        String selectedIDString = selectedItem.toString();
+        int supplierID = supplierMap.get(selectedIDString);
+
+        // 3. Database Connection
         java.sql.Connection con = sales_system.db.mycon();
         
-        String sql = "INSERT INTO products (product_name, category, buy_price, sell_price, available_qty) VALUES (?,?,?,?,?)";
+        // 4. Prepare SQL Statement
+        String sql = "INSERT INTO products (product_name, category, buy_price, sell_price, available_qty, sid) VALUES (?,?,?,?,?,?)";
         java.sql.PreparedStatement pst = con.prepareStatement(sql);
         
-        pst.setString(1, name);
-        pst.setString(2, category);
-        pst.setString(3, bprice);
-        pst.setString(4, sprice);
-        pst.setString(5, qty);
-        
-        int rowAffected = pst.executeUpdate();
-        
-        if(rowAffected > 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Product Added Successfully!");
-            table_load(); 
+        // 5. Map TextFields to Prepared Statement
+        pst.setString(1, txt_name.getText());
+        pst.setString(2, txt_category.getText());
+
+        // FIX: Explicitly parse numbers to prevent "Data Truncated" errors
+        // We use try-catch around these to catch typing errors (like letters in price)
+        try {
+            double buyPrice = txt_buy.getText().isEmpty() ? 0.0 : Double.parseDouble(txt_buy.getText());
+            double sellPrice = txt_sell.getText().isEmpty() ? 0.0 : Double.parseDouble(txt_sell.getText());
+            int qty = txt_qty.getText().isEmpty() ? 0 : Integer.parseInt(txt_qty.getText());
+
+            pst.setDouble(3, buyPrice); 
+            pst.setDouble(4, sellPrice); 
+            pst.setInt(5, qty);
+            pst.setInt(6, supplierID);
+
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Check Price and Qty! Use numbers only (e.g. 10.50)");
+            return; // Stop execution if numbers are invalid
         }
 
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "SQL Error: " + e.getMessage());
-        e.printStackTrace();
+        // 6. Execute Database Update
+        pst.executeUpdate();
+        
+        // 7. Success Message
+        javax.swing.JOptionPane.showMessageDialog(this, "Product Added Successfully!");
+
+        // 8. REFRESH UI
+        table_load(); // Reloads the table to show the new product
+        
+        // 9. Clear fields for next entry
+        txt_name.setText("");
+        txt_category.setText("");
+        txt_buy.setText("");
+        txt_sell.setText("");
+        txt_qty.setText("");
+
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         e.printStackTrace();
     }
-     
+    
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void txt_pnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_pnameActionPerformed
+    private void txt_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_pnameActionPerformed
+    }//GEN-LAST:event_txt_nameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+    
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        
-    try {
-    // 1. Check if an ID was actually selected from the table first
-    if (productID == null || productID.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table first!");
-        return;
-    }
+    
+        try {
+        // 1. Check if a product ID is available (This should be set when you click the table)
+        if (productID == null || productID.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table first!");
+            return;
+        }
 
-    // 2. Ensure the package path is correct 
-    java.sql.Connection con = sales_system.db.mycon();
-    
-    String sql = "UPDATE products SET product_name=?, category=?, buy_price=?, sell_price=?, available_qty=? WHERE product_id=?";
-    
-    java.sql.PreparedStatement pst = con.prepareStatement(sql);
-    pst.setString(1, txt_pname.getText());
-    pst.setString(2, txt_barcode.getText());
-    pst.setString(3, txt_bprice.getText());
-    pst.setString(4, txt_sprice.getText());
-    pst.setString(5, txt_qty.getText());
-    pst.setString(6, productID); 
-    
-    int rowsUpdated = pst.executeUpdate();
-    
-    if (rowsUpdated > 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Product Updated Successfully!");
-        table_load(); // Refresh to show the new data
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Update Failed: No row found with ID " + productID);
+        // 2. Get the Supplier ID (sid) from your ComboBox/Map
+        Object selectedItem = com_supplier.getSelectedItem();
+        if (selectedItem == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a Supplier!");
+            return;
+        }
+        int supplierID = supplierMap.get(selectedItem.toString());
+
+        // 3. Database Connection
+        java.sql.Connection con = sales_system.db.mycon();
+        
+        // 4. SQL Statement (7 Parameters)
+        String sql = "UPDATE products SET product_name=?, category=?, buy_price=?, sell_price=?, available_qty=?, sid=? WHERE product_id=?";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        
+        // 5. Data Conversion and Parameter Mapping
+        pst.setString(1, txt_name.getText());
+        pst.setString(2, txt_category.getText());
+
+        try {
+            // Convert to proper numeric types to prevent "Data Truncated" errors
+            double buyPrice = txt_buy.getText().isEmpty() ? 0.0 : Double.parseDouble(txt_buy.getText());
+            double sellPrice = txt_sell.getText().isEmpty() ? 0.0 : Double.parseDouble(txt_sell.getText());
+            int qty = txt_qty.getText().isEmpty() ? 0 : Integer.parseInt(txt_qty.getText());
+
+            pst.setDouble(3, buyPrice); 
+            pst.setDouble(4, sellPrice); 
+            pst.setInt(5, qty);
+            pst.setInt(6, supplierID);    // The Supplier ID (Foreign Key)
+            pst.setString(7, productID);   // The Product ID (Where clause)
+
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please enter numeric values for Price and Quantity!");
+            return;
+        }
+
+        // 6. Execute Update
+        int rowsUpdated = pst.executeUpdate();
+        
+        if (rowsUpdated > 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Product Updated Successfully!");
+            table_load(); // Refresh the JTable
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Update Failed: Product ID not found.");
+        }
+        
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
     }
     
-} catch (Exception e) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-}
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -255,10 +350,10 @@ public class Products extends javax.swing.JFrame {
     // Make sure column 0 is definitely your 'product_id' column
     productID = jTable1.getValueAt(r, 0).toString(); 
     
-    txt_pname.setText(jTable1.getValueAt(r, 1).toString());
-    txt_barcode.setText(jTable1.getValueAt(r, 2).toString());
-    txt_bprice.setText(jTable1.getValueAt(r, 3).toString());
-    txt_sprice.setText(jTable1.getValueAt(r, 4).toString());
+    txt_name.setText(jTable1.getValueAt(r, 1).toString());
+    txt_category.setText(jTable1.getValueAt(r, 2).toString());
+    txt_buy.setText(jTable1.getValueAt(r, 3).toString());
+    txt_sell.setText(jTable1.getValueAt(r, 4).toString());
     txt_qty.setText(jTable1.getValueAt(r, 5).toString());
 
     
@@ -336,9 +431,11 @@ public class Products extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> com_supplier;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -347,12 +444,13 @@ public class Products extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txt_barcode;
-    private javax.swing.JTextField txt_bprice;
-    private javax.swing.JTextField txt_pname;
+    private javax.swing.JTextField txt_buy;
+    private javax.swing.JTextField txt_category;
+    private javax.swing.JTextField txt_name;
     private javax.swing.JTextField txt_qty;
-    private javax.swing.JTextField txt_sprice;
+    private javax.swing.JTextField txt_sell;
     // End of variables declaration//GEN-END:variables
 }
