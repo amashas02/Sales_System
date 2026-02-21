@@ -44,6 +44,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
         lbl_balance = new javax.swing.JLabel();
         Remove = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -135,6 +136,9 @@ public class Shopping_Cart extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 470, -1, -1));
+
+        jButton2.setText("Dashboard");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setToolTipText("");
@@ -432,6 +436,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
     private javax.swing.JButton Remove;
     private javax.swing.JComboBox<String> com_product;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

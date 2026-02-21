@@ -67,6 +67,7 @@ public class Products extends javax.swing.JFrame {
         com_supplier = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,7 +92,7 @@ public class Products extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txt_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 90, 30));
-        getContentPane().add(txt_category, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 90, 30));
+        getContentPane().add(txt_category, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 90, 30));
 
         jButton2.setText("ADD");
         jButton2.setOpaque(true);
@@ -108,7 +109,7 @@ public class Products extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 490, -1, 30));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 490, -1, 30));
 
         jButton3.setText("Delete");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +145,7 @@ public class Products extends javax.swing.JFrame {
 
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("category");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, -1, -1));
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Buy Price");
@@ -160,19 +161,22 @@ public class Products extends javax.swing.JFrame {
         getContentPane().add(txt_buy, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 90, 30));
         getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, 90, 30));
         getContentPane().add(txt_sell, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 90, 30));
-        getContentPane().add(com_supplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(302, 180, 100, -1));
+        getContentPane().add(com_supplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 100, -1));
 
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Suppelr id");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(334, 140, 70, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 70, -1));
 
-        jButton4.setText("Low stcok report");
+        jButton4.setText("Below 5 qty stcok report");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 490, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 490, 190, -1));
+
+        jButton5.setText("Dashboard");
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -465,6 +469,7 @@ public void loadSuppliers() {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

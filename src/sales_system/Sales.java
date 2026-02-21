@@ -32,12 +32,13 @@ public class Sales extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setText("Sales");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, -1, -1));
+        jLabel3.setText(" Sales ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
 
         btn_top_selling.setText("Product Profit Report");
         btn_top_selling.addActionListener(new java.awt.event.ActionListener() {
@@ -45,7 +46,7 @@ public class Sales extends javax.swing.JFrame {
                 btn_top_sellingActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 100, -1, -1));
+        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 460, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -60,8 +61,11 @@ public class Sales extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, 650, 280));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 650, 280));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 910, 570));
+
+        jButton1.setText("Dashboard");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -165,6 +169,7 @@ public class Sales extends javax.swing.JFrame {
     // Finalized UI Design 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_top_selling;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;

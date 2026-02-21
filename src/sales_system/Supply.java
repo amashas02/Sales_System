@@ -38,23 +38,29 @@ public class Supply extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txt_sup_name = new javax.swing.JTextField();
+        txt_sup_tp = new javax.swing.JTextField();
+        txt_sup_addr = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(385, 31, 37, -1));
+        jLabel1.setText("Supply Management");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 130, -1));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 430, -1, -1));
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Update");
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, -1, -1));
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Delete");
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 430, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -65,33 +71,70 @@ public class Supply extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Supplier Id", "Supplier Name", "Telephone No", "Address"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, -1, 270));
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Supplier Name");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
 
-        jLabel3.setText("jLabel3");
+        jLabel3.setText("Telephone Number");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
 
-        jLabel4.setText("jLabel4");
+        jLabel4.setText("Address");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, -1, -1));
+        getContentPane().add(txt_sup_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 80, -1));
+        getContentPane().add(txt_sup_tp, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, 80, -1));
+        getContentPane().add(txt_sup_addr, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, 80, -1));
 
-        jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, -1, -1));
-
-        jTextField2.setText("jTextField2");
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, -1, -1));
-
-        jTextField3.setText("jTextField3");
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, -1, -1));
+        jButton4.setText("Dashboard");
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        // 1. Get data from Text Fields
+    String name = txt_sup_name.getText();
+    String tp = txt_sup_tp.getText();
+    String addr = txt_sup_addr.getText();
+
+    // 2. Simple Validation
+    if (name.isEmpty() || tp.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please fill in Name and Phone Number!");
+        return;
+    }
+
+    try {
+        // 3. Get Connection and Prepare Statement
+        java.sql.Connection con = sales_system.db.mycon();
+        java.sql.PreparedStatement pst = con.prepareStatement(
+            "INSERT INTO supplier (supplier_name, tp_number, address) VALUES (?,?,?)"
+        );
+
+        // 4. Set parameters (prevents SQL injection)
+        pst.setString(1, name);
+        pst.setString(2, tp);
+        pst.setString(3, addr);
+
+        // 5. Execute and Update
+        pst.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(this, "Supplier Added Successfully!");
+
+        // 6. Refresh your JTable and Clear Fields
+        supplier_load(); 
+        clearFields(); 
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+    }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,18 +199,28 @@ public class Supply extends javax.swing.JFrame {
     }
 }
     
+    private void clearFields() {
+    txt_sup_name.setText("");
+    txt_sup_tp.setText("");
+    txt_sup_addr.setText("");
+    txt_sup_name.requestFocus(); // Put cursor back in name field
+}
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txt_sup_addr;
+    private javax.swing.JTextField txt_sup_name;
+    private javax.swing.JTextField txt_sup_tp;
     // End of variables declaration//GEN-END:variables
 }
