@@ -31,8 +31,8 @@ public class Sales extends javax.swing.JFrame {
         btn_top_selling = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -62,43 +62,46 @@ public class Sales extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 650, 280));
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 910, 570));
 
         jButton1.setText("Dashboard");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 910, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_top_sellingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_top_sellingActionPerformed
         // TODO add your handling code here:
-       // 1. Get the selected row index
-    // 1. Get the selected row from your Sales JTable
+       // get the selected row index
     int selectedRow = jTable1.getSelectedRow();
     
-    // 2. Check if a row is actually selected
+    // Check if a row is actually selected
     if (selectedRow == -1) {
         javax.swing.JOptionPane.showMessageDialog(this, "Please select a sale from the table first!");
         return;
     }
 
     try {
-        // 3. Get the Sale ID from the first column (index 0)
-        // We convert it to String first, then Parse to Integer to avoid ClassCast errors
+        // Get the Sale ID from the first column (index 0)
         String idString = jTable1.getValueAt(selectedRow, 0).toString();
         Integer saleID = Integer.parseInt(idString); 
 
-        // 4. Database Connection
+        // Database Connection
         java.sql.Connection con = sales_system.db.mycon();
         
-        // 5. Create the Parameter Map
+        // Create the Parameter Map
         java.util.HashMap<String, Object> para = new java.util.HashMap<>();
         para.put("para_sale_id", saleID); // This name MUST match your Jasper Parameter exactly
 
-        // 6. Path to your report
+        // Path to your report
         String reportPath = "src\\reports\\Profitability_Report.jrxml"; 
         
-        // 7. Compile, Fill, and View
+        // Compile, Fill, and View
         net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
         net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, para, con);
         net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
@@ -111,6 +114,13 @@ public class Sales extends javax.swing.JFrame {
     }
        
     }//GEN-LAST:event_btn_top_sellingActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Dashboard dsb = new Dashboard();
+        dsb.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

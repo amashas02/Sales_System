@@ -11,7 +11,8 @@ package sales_system;
 
 
 public class Supply extends javax.swing.JFrame {
-
+    String id_to_update = "";
+String selected_sid = ""; // This will store the ID of the row you clicked
     /**
      * Creates new form Supply
      */
@@ -58,6 +59,11 @@ public class Supply extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 430, -1, -1));
 
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, -1, -1));
 
         jButton3.setText("Delete");
@@ -74,6 +80,11 @@ public class Supply extends javax.swing.JFrame {
                 "Supplier Id", "Supplier Name", "Telephone No", "Address"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, -1, 270));
@@ -91,6 +102,11 @@ public class Supply extends javax.swing.JFrame {
         getContentPane().add(txt_sup_addr, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, 80, -1));
 
         jButton4.setText("Dashboard");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         pack();
@@ -98,34 +114,34 @@ public class Supply extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        // 1. Get data from Text Fields
+        // Get data from Text Fields
     String name = txt_sup_name.getText();
     String tp = txt_sup_tp.getText();
     String addr = txt_sup_addr.getText();
 
-    // 2. Simple Validation
+    // Simple Validation
     if (name.isEmpty() || tp.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Please fill in Name and Phone Number!");
         return;
     }
 
     try {
-        // 3. Get Connection and Prepare Statement
+        // Get Connection and Prepare Statement
         java.sql.Connection con = sales_system.db.mycon();
         java.sql.PreparedStatement pst = con.prepareStatement(
             "INSERT INTO supplier (supplier_name, tp_number, address) VALUES (?,?,?)"
         );
 
-        // 4. Set parameters (prevents SQL injection)
+        // Set parameters (prevents SQL injection)
         pst.setString(1, name);
         pst.setString(2, tp);
         pst.setString(3, addr);
 
-        // 5. Execute and Update
+        // Execute and Update
         pst.executeUpdate();
         javax.swing.JOptionPane.showMessageDialog(this, "Supplier Added Successfully!");
 
-        // 6. Refresh your JTable and Clear Fields
+        // Refresh your JTable and Clear Fields
         supplier_load(); 
         clearFields(); 
 
@@ -135,6 +151,66 @@ public class Supply extends javax.swing.JFrame {
     }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+     int r = jTable1.getSelectedRow();
+    
+    // Save the ID to our hidden variable (Column 0)
+    id_to_update = jTable1.getValueAt(r, 0).toString();
+    
+    // Send the rest of the data to your visible text fields
+    txt_sup_name.setText(jTable1.getValueAt(r, 1).toString());
+    txt_sup_tp.setText(jTable1.getValueAt(r, 2).toString());
+    txt_sup_addr.setText(jTable1.getValueAt(r, 3).toString());
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        // Validation: Make sure the hidden ID isn't empty
+    if (id_to_update.equals("")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a supplier from the table first!");
+        return;
+    }
+
+    // Get the NEW values from your text fields
+    String name = txt_sup_name.getText();
+    String tp = txt_sup_tp.getText();
+    String addr = txt_sup_addr.getText();
+
+    try {
+        java.sql.Connection con = sales_system.db.mycon();
+        
+        // Prepare the Update Statement
+        String sql = "UPDATE supplier SET supplier_name=?, tp_number=?, address=? WHERE sid=?";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        
+        pst.setString(1, name);
+        pst.setString(2, tp);
+        pst.setString(3, addr);
+        pst.setString(4, id_to_update); // Using the hidden ID from the MouseClick
+
+        // Execute
+        pst.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(this, "Supplier Updated Successfully!");
+
+        // Clean up
+        supplier_load(); // Refresh JTable
+        clearFields();  // Method to empty your text boxes
+        id_to_update = ""; // Reset the hidden ID
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Update Error: " + e.getMessage());
+    }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        Dashboard dsb = new Dashboard();
+        dsb.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,13 +249,13 @@ public class Supply extends javax.swing.JFrame {
 
     public void supplier_load() {
     try {
-        // 1. Get database connection
+        // Get database connection
         java.sql.Connection con = sales_system.db.mycon();
         
-        // 2. Execute Query
+        // Execute Query
         java.sql.ResultSet rs = con.createStatement().executeQuery("SELECT * FROM supplier");
         
-        // 3. Get the Table Model from your JTable (rename jTable1 if needed)
+        // Get the Table Model from your JTable (rename jTable1 if needed)
         javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         dt.setRowCount(0); // Clear existing data
 

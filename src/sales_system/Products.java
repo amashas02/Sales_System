@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import net.proteanit.sql.DbUtils;
 import sales_system.db; 
+import com.formdev.flatlaf.FlatDarkLaf;
 /**
  *
  * @author USER
@@ -176,6 +177,11 @@ public class Products extends javax.swing.JFrame {
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 490, 190, -1));
 
         jButton5.setText("Dashboard");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
@@ -217,7 +223,7 @@ public void loadSuppliers() {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
-        // 1. Validation: Ensure a supplier is selected
+        //  Ensure a supplier is selected
     Object selectedItem = com_supplier.getSelectedItem();
     if (selectedItem == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "Please select a Supplier first!");
@@ -225,23 +231,20 @@ public void loadSuppliers() {
     }
 
     try {
-        // 2. Get the Numeric Supplier ID from your HashMap
         String selectedIDString = selectedItem.toString();
         int supplierID = supplierMap.get(selectedIDString);
 
-        // 3. Database Connection
+        // Database Connection
         java.sql.Connection con = sales_system.db.mycon();
         
-        // 4. Prepare SQL Statement
+        //  Prepare SQL Statement
         String sql = "INSERT INTO products (product_name, category, buy_price, sell_price, available_qty, sid) VALUES (?,?,?,?,?,?)";
         java.sql.PreparedStatement pst = con.prepareStatement(sql);
         
-        // 5. Map TextFields to Prepared Statement
+        // Map TextFields to Prepared Statement
         pst.setString(1, txt_name.getText());
         pst.setString(2, txt_category.getText());
 
-        // FIX: Explicitly parse numbers to prevent "Data Truncated" errors
-        // We use try-catch around these to catch typing errors (like letters in price)
         try {
             double buyPrice = txt_buy.getText().isEmpty() ? 0.0 : Double.parseDouble(txt_buy.getText());
             double sellPrice = txt_sell.getText().isEmpty() ? 0.0 : Double.parseDouble(txt_sell.getText());
@@ -294,13 +297,11 @@ public void loadSuppliers() {
         // TODO add your handling code here:
     
         try {
-        // 1. Check if a product ID is available (This should be set when you click the table)
         if (productID == null || productID.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table first!");
             return;
         }
 
-        // 2. Get the Supplier ID (sid) from your ComboBox/Map
         Object selectedItem = com_supplier.getSelectedItem();
         if (selectedItem == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please select a Supplier!");
@@ -308,14 +309,11 @@ public void loadSuppliers() {
         }
         int supplierID = supplierMap.get(selectedItem.toString());
 
-        // 3. Database Connection
         java.sql.Connection con = sales_system.db.mycon();
         
-        // 4. SQL Statement (7 Parameters)
         String sql = "UPDATE products SET product_name=?, category=?, buy_price=?, sell_price=?, available_qty=?, sid=? WHERE product_id=?";
         java.sql.PreparedStatement pst = con.prepareStatement(sql);
         
-        // 5. Data Conversion and Parameter Mapping
         pst.setString(1, txt_name.getText());
         pst.setString(2, txt_category.getText());
 
@@ -336,7 +334,7 @@ public void loadSuppliers() {
             return;
         }
 
-        // 6. Execute Update
+        // Execute Update
         int rowsUpdated = pst.executeUpdate();
         
         if (rowsUpdated > 0) {
@@ -408,13 +406,11 @@ public void loadSuppliers() {
         try {
         java.sql.Connection con = sales_system.db.mycon();
         
-        // Path to your jrxml
         String reportPath = "src\\reports\\Reorder_Report.jrxml"; 
         
         // Compile and Fill
         net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
         
-        // We don't need parameters here as the SQL handles the 'qty <= 10' filter
         net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, null, con);
         
         // View Report
@@ -425,6 +421,13 @@ public void loadSuppliers() {
         e.printStackTrace();
     }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        Dashboard dsb = new Dashboard();
+        dsb.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -453,7 +456,7 @@ public void loadSuppliers() {
         }
         //</editor-fold>
 
-        
+        FlatDarkLaf.setup();
         //databse
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

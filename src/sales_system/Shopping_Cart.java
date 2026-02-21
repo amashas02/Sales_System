@@ -138,6 +138,11 @@ public class Shopping_Cart extends javax.swing.JFrame {
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 470, -1, -1));
 
         jButton2.setText("Dashboard");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
@@ -156,18 +161,17 @@ public class Shopping_Cart extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(this, "Please select a valid Product ID!");
         return;
     }
-    // 1. Get user input
+    // Get user input
     String id = com_product.getSelectedItem().toString();
     String qtyInput = txt_qty.getText();
 
-    // Validation: Don't allow empty quantity
     if (qtyInput.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Please enter quantity first!");
         return;
     }
 
     try {
-        // 2. Database Lookup: Get Name and Price based on the ID
+        //  Database Lookup: Get Name and Price based on the ID
         java.sql.Connection con = sales_system.db.mycon();
         String sql = "SELECT product_name, sell_price FROM products WHERE product_id = ?";
         java.sql.PreparedStatement pst = con.prepareStatement(sql);
@@ -175,13 +179,13 @@ public class Shopping_Cart extends javax.swing.JFrame {
         java.sql.ResultSet rs = pst.executeQuery();
 
         if (rs.next()) {
-            // 3. Extract data from DB result
+            // Extract data from DB result
             String name = rs.getString("product_name");
             double price = rs.getDouble("sell_price");
             double qty = Double.parseDouble(qtyInput);
             double total = price * qty;
 
-            // 4. Add data to the JTable
+            // Add data to the JTable
             javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
             java.util.Vector v = new java.util.Vector();
             v.add(id);      // Column 0
@@ -192,7 +196,7 @@ public class Shopping_Cart extends javax.swing.JFrame {
             
             dt.addRow(v);
             
-            // 5. Update the Grand Total and clear qty field
+            // Update the Grand Total and clear qty field
             calculate_grand_total();
             txt_qty.setText(""); 
             
@@ -250,14 +254,14 @@ public class Shopping_Cart extends javax.swing.JFrame {
 
     try {
         
-        // Validation 1: Check if table is empty
+        // Check if table is empty
         if (jTable1.getRowCount() == 0) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please add items to the cart first!", "Validation Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
             jButton3.setEnabled(true);
             return;
         }
 
-        // Validation 2: Check if Pay field is numeric
+        // Check if Pay field is numeric
         try {
             Double.parseDouble(txt_pay.getText());
         } catch (NumberFormatException e) {
@@ -269,7 +273,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
 
         java.sql.Connection con = sales_system.db.mycon(); 
         
-        // 3. Save the main Sales record
         String sql = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
         String sql_update_stock = "UPDATE products SET qty = qty - ? WHERE product_id = ?"; // The Stock Update SQL
         java.sql.PreparedStatement pst = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
@@ -286,7 +289,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
             sales_id = rs.getInt(1); 
         }
 
-        // 4. Save Table Items (The "Details" Loop)
         String sql_details = "INSERT INTO sales_details (sale_id, product_id, product_name, qty, price, total_price) VALUES (?,?,?,?,?,?)";
         java.sql.PreparedStatement pst_details = con.prepareStatement(sql_details);
 
@@ -316,7 +318,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
             }
         }
 
-        // 5. Success and Reset UI
         javax.swing.JOptionPane.showMessageDialog(this, "Sale Completed! ID: " + sales_id);
         
         javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
@@ -329,7 +330,6 @@ public class Shopping_Cart extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         e.printStackTrace();
     } finally {
-        // 6. Re-enable button after processing is complete
         jButton3.setEnabled(true);
     }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -358,6 +358,13 @@ public class Shopping_Cart extends javax.swing.JFrame {
         evt.consume();
     }
     }//GEN-LAST:event_txt_payKeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Dashboard dsb = new Dashboard();
+        dsb.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     public void calculate_grand_total() {
@@ -417,14 +424,14 @@ public class Shopping_Cart extends javax.swing.JFrame {
         
         com_product.removeAllItems();
         
-        // 1. Add the placeholder first
+        // Add the placeholder first
         com_product.addItem("Select ID"); 
         
         while(rs.next()) {
             com_product.addItem(rs.getString("product_id"));
         }
         
-        // 2. Ensure "Select ID" is the one showing when page opens
+        // Ensure "Select ID" is the one showing when page opens
         com_product.setSelectedIndex(0); 
         
     } catch (Exception e) {
