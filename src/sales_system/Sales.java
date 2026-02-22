@@ -32,6 +32,7 @@ public class Sales extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -40,13 +41,13 @@ public class Sales extends javax.swing.JFrame {
         jLabel3.setText(" Sales ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
 
-        btn_top_selling.setText("Product Profit Report");
+        btn_top_selling.setText("Sale Profitability Report");
         btn_top_selling.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_top_sellingActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 460, -1, -1));
+        getContentPane().add(btn_top_selling, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 440, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -70,7 +71,15 @@ public class Sales extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -4, 910, 570));
+
+        jButton2.setText("Generate Receipt");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 440, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-90, 0, 910, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -121,6 +130,55 @@ public class Sales extends javax.swing.JFrame {
         dsb.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+       try {
+        // 1. Get the selected row index from the Sales JTable
+        int row = jTable1.getSelectedRow();
+        
+        // 2. Check if a row is actually selected
+        if (row == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Please select an invoice from the table first!", 
+                "No Selection", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 3. Get the ID as a String and CONVERT to Integer
+        // This line solves the java.lang.ClassCastException
+        String idString = jTable1.getValueAt(row, 0).toString();
+        Integer saleID = Integer.valueOf(idString); 
+
+        // 4. Set up the Parameters Map
+        // Make sure "sid" matches the name in your Jasper Dataset Dialog
+        java.util.HashMap<String, Object> para = new java.util.HashMap<>();
+        para.put("sid", saleID); 
+
+        // 5. Establish Database Connection
+        java.sql.Connection con = sales_system.db.mycon();
+
+        // 6. Path to your report file
+        // Note: It is better to use the .jasper (compiled) file for speed
+        String reportPath = "src/reports/Comprehensive_Sale_Item_Report.jasper"; 
+
+        // 7. Fill the report with data
+        net.sf.jasperreports.engine.JasperPrint jp = 
+            net.sf.jasperreports.engine.JasperFillManager.fillReport(reportPath, para, con);
+        
+        // 8. Open the Jasper Viewer
+        // 'false' prevents the whole application from closing when you close the print window
+        net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Invalid ID format: " + e.getMessage());
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Report Error: " + e.getMessage());
+        e.printStackTrace();
+    } 
+       
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,6 +238,7 @@ public class Sales extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_top_selling;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
