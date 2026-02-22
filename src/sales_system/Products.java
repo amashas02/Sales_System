@@ -406,7 +406,7 @@ public void loadSuppliers() {
         try {
         java.sql.Connection con = sales_system.db.mycon();
         
-        String reportPath = "src\\reports\\Reorder_Report.jrxml"; 
+        String reportPath = "src\\reports\\Top_products_sup.jrxml"; 
         
         // Compile and Fill
         net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);

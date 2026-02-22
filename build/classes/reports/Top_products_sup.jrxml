@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Top_products_sup" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="75d227d0-1faa-4881-9edd-ef06e9728cc9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CoffeeShopLink"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[SELECT 
+    p.product_name AS 'Product Name',
+    SUM(sd.qty) AS 'Total Sold',
+    s.supplier_name AS 'Supplier Name',
+    s.tp_number AS 'Contact Number'
+FROM sales_details sd
+INNER JOIN products p ON sd.product_id = p.product_id
+INNER JOIN supplier s ON p.sid = s.sid
+GROUP BY sd.product_id
+ORDER BY SUM(sd.qty) DESC;]]>
+	</queryString>
+	<field name="Product Name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="product_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="Product Name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+	</field>
+	<field name="Total Sold" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Total Sold"/>
+		<property name="com.jaspersoft.studio.field.label" value="Total Sold"/>
+	</field>
+	<field name="Supplier Name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="supplier_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="Supplier Name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplier"/>
+	</field>
+	<field name="Contact Number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tp_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="Contact Number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplier"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="100" height="30" uuid="581adba1-f0c7-470a-8f22-9fa90babbcb7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82595a8f-e975-407b-87f3-ab3595ba24bf"/>
+				</reportElement>
+				<text><![CDATA[Product Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="10" width="100" height="30" uuid="34c1e84d-438f-4faa-93ae-433f640c9137">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="374626bf-ac56-46e0-853c-72bf6a2b46e3"/>
+				</reportElement>
+				<text><![CDATA[Total Sold]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="10" width="100" height="30" uuid="1e17b56f-10cf-4771-aa4e-92d97359512e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07bbc0db-dd12-4d12-b728-f31fa80371d4"/>
+				</reportElement>
+				<text><![CDATA[Supplier Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="10" width="100" height="30" uuid="b67f9b8b-019f-49b5-9a83-95b86076d800">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb0baaa3-f77f-4c7f-b949-8f46fea005c2"/>
+				</reportElement>
+				<text><![CDATA[Contact Number]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="100" height="30" uuid="3d07f8f9-c89a-4bf8-9ddf-db232e51bcf2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82595a8f-e975-407b-87f3-ab3595ba24bf"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Product Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="30" width="100" height="30" uuid="dbad860e-1ebc-4441-a86d-a9dd4a3e1ec7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="374626bf-ac56-46e0-853c-72bf6a2b46e3"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Total Sold}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="40" width="100" height="30" uuid="ddda8600-b537-41a3-a92d-bb123fa41dd9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07bbc0db-dd12-4d12-b728-f31fa80371d4"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Supplier Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="40" width="100" height="30" uuid="e7bca9ce-c9b4-4a5e-9578-dad4478ea31d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb0baaa3-f77f-4c7f-b949-8f46fea005c2"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Contact Number}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
