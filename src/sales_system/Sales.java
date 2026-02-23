@@ -38,6 +38,7 @@ public class Sales extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText(" Sales ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
 
@@ -57,7 +58,7 @@ public class Sales extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Sales Id", "Total Bill", "Pay Amount", "Balance"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -79,6 +80,9 @@ public class Sales extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 440, -1, -1));
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 204));
+        jLabel2.setOpaque(true);
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-90, 0, 910, 570));
 
         pack();
@@ -108,7 +112,9 @@ public class Sales extends javax.swing.JFrame {
         para.put("para_sale_id", saleID); // This name MUST match your Jasper Parameter exactly
 
         // Path to your report
-        String reportPath = "src\\reports\\Profitability_Report.jrxml"; 
+        //String reportPath = "src\\reports\\Profitability_Report.jrxml"; 
+        String reportPath = "reports/Profitability_Report.jrxml";
+
         
         // Compile, Fill, and View
         net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);

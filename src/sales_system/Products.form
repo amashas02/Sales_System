@@ -129,7 +129,7 @@
               <Table columnCount="7" rowCount="4">
                 <Column editable="true" title="Product ID" type="java.lang.Object"/>
                 <Column editable="true" title="Product Name" type="java.lang.Object"/>
-                <Column editable="true" title="category" type="java.lang.Object"/>
+                <Column editable="true" title="Category" type="java.lang.Object"/>
                 <Column editable="true" title="Buy Price" type="java.lang.Object"/>
                 <Column editable="true" title="Sell Price" type="java.lang.Object"/>
                 <Column editable="true" title="Available qty" type="java.lang.Object"/>

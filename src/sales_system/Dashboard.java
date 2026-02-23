@@ -15,6 +15,7 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() {
         initComponents();
+        updateDashboard();
     }
 
     /**
@@ -31,6 +32,15 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        lbl_low_stock = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        lbl_total_sales = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        lbl_total_invoices = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,7 +52,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, -1, 80));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, 230, 60));
 
         jButton2.setText("Inventory");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -50,7 +60,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, 80));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 240, 60));
 
         jButton3.setText("Shopping Cart");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +68,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 280, -1, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 240, 50));
 
         jButton4.setText("Sales");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -66,12 +76,51 @@ public class Dashboard extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 250, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 410, 250, 50));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Main Dashboard");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
+        jLabel2.setText("Super Market System Dashboard");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, -1, -1));
+
+        jPanel2.setBackground(new java.awt.Color(255, 0, 51));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Low Stock");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
+
+        lbl_low_stock.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_low_stock.setText("jLabel6");
+        jPanel2.add(lbl_low_stock, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, 120, 110));
+
+        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Total Revenue");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        lbl_total_sales.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_total_sales.setText("jLabel3");
+        jPanel1.add(lbl_total_sales, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 110, 110));
+
+        jPanel3.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Total Invoices");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        lbl_total_invoices.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_total_invoices.setText("jLabel7");
+        jPanel3.add(lbl_total_invoices, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 100, 120, 110));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 204));
         jLabel1.setOpaque(true);
@@ -146,7 +195,34 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     
-    
+    public void updateDashboard() {
+    try {
+        java.sql.Connection con = sales_system.db.mycon(); // Using your existing db class
+        java.sql.Statement st = con.createStatement();
+
+        // 1. Get Total Sales Revenue
+        java.sql.ResultSet rs1 = st.executeQuery("SELECT SUM(total_bill) FROM sales");
+        if (rs1.next()) {
+            double total = rs1.getDouble(1);
+            lbl_total_sales.setText(String.format("%.2f", total));
+        }
+
+        // 2. Get Count of Sales (Invoices)
+        java.sql.ResultSet rs2 = st.executeQuery("SELECT COUNT(sale_id) FROM sales");
+        if (rs2.next()) {
+            lbl_total_invoices.setText(rs2.getString(1));
+        }
+
+        // 3. Get Low Stock Alert (Products with qty < 5)
+        java.sql.ResultSet rs3 = st.executeQuery("SELECT COUNT(*) FROM products WHERE available_qty <= 5");
+        if (rs3.next()) {
+            lbl_low_stock.setText(rs3.getString(1));
+        }
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Dashboard Error: " + e.getMessage());
+    }
+}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -155,5 +231,14 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lbl_low_stock;
+    private javax.swing.JLabel lbl_total_invoices;
+    private javax.swing.JLabel lbl_total_sales;
     // End of variables declaration//GEN-END:variables
 }

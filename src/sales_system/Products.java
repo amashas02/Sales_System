@@ -128,7 +128,7 @@ public class Products extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Product ID", "Product Name", "category", "Buy Price", "Sell Price", "Available qty", "Suppler name"
+                "Product ID", "Product Name", "Category", "Buy Price", "Sell Price", "Available qty", "Suppler name"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -406,7 +406,7 @@ public void loadSuppliers() {
         try {
         java.sql.Connection con = sales_system.db.mycon();
         
-        String reportPath = "src\\reports\\Top_products_sup.jrxml"; 
+        String reportPath = "reports/Top_products_sup.jrxml";
         
         // Compile and Fill
         net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
